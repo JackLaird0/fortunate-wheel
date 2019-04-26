@@ -4,10 +4,55 @@
     <title>Gametime Starter Kit</title>
   </head>
   <body>
-    <h1>Gametime Starter Kit</h1>
+    <div class="name-form">
+      <input type="text" class="player playerOne" placeholder="Player 1">
+      <input type="text" class="player playerTwo" placeholder="Player 2">
+      <input type="text" class="player playerThree" placeholder="Player 3">
+      <button class="submit-names">Submit Names</button>
+    </div>
+    <div class="scoreboard-hidden">
+      <div class="player-score player-one">
+        <p class='playerOne-name'>Name</p>
+        <p class='player1-score'>Score: 0</p>
+        <p>bank</p>  
+      </div>
+      <div class="player-score player-two">
+        <p class='playerTwo-name'>Name</p>
+        <p class='player2-score'>Score: 0</p>
+        <p>bank</p>
+      </div>
+      <div class="player-score player-three">
+        <p class='playerThree-name'>Name</p>
+        <p class='player3-score'>Score: 0</p>
+        <p>bank</p>
+      </div>
+    </div>
+    <div class="score-board">
+      <div class="left-padding"></div>
+      <div class="board">
+      </div>
+      <div class="right-padding"></div>
+    </div>
+    <div class="letter-bank">
+      <div class="consonants">
 
-    <img src="/images/turing-logo.png" alt="turing logo" height="100px" width="100px">
+      </div>
+      <div class="vowels">
 
+      </div>
+    </div>
+    <div class="spin-container">
+      <button class="spin-wheel">
+        Spin Me
+      </button>
+    </div>
     <!-- Do not include the index.js or main.bundle.js file here - it is done automatically by the webpack server -->
   </body>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="./scripts/index.js" type="text/javascript"></script>
 </html>
+
+ <!-- <div class="spinner">
+    <div class="double-bounce1"></div>
+    <div class="double-bounce2"></div>
+</div> -->
