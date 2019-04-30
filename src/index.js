@@ -26,11 +26,12 @@ $(document).ready(() => {
 
 $('.submit-names').on('click', e => {
   createPlayers();
+  createPuzzle();
   makeGameBoard();
   createLetterBank();
   performElementAnimations();
-  enterLetters();
-  $('.letter').on('click', e => selectLetter(e))
+  enterLetterSpaces();
+  $('.letter').on('click', e => selectLetter(e));
 });
 
 const performElementAnimations = () => {
@@ -46,8 +47,8 @@ const createLetterBank = () => {
 }
 
 const prependLetters = (bank, type) => {
-  bank.forEach( (letter, ind) => {
-    $(`.${type}`).prepend(`<p class='letter'>${letter.toUpperCase()}</p>`)
+  bank.forEach( (letter) => {
+    $(`.${type}`).prepend(`<button class='letter '>${letter.toUpperCase()}</button>`)
   })
 }
 
@@ -69,15 +70,18 @@ const createPlayers = () => {
 
 // Makes a grid of 56 boards for the puzzle to live in
 const makeGameBoard = () => {
-  let puzzleQuestion = getPuzzleQuestion(game.currentRound).correct_answer;
-  puzzle = new Puzzle(puzzleQuestion);
   for( let i = 0; i < 48; i++ ) {
     $('.board').prepend(`<div class='tile tile-${i}'></div>`);
   }
 }
 
+const createPuzzle = () => {
+  let puzzleQuestion = getPuzzleQuestion(game.currentRound).correct_answer;
+  puzzle = new Puzzle(puzzleQuestion);
+}
+
 // Adds puzzle letters into grid
-const enterLetters = () => {
+const enterLetterSpaces = () => {
   let answerArray = puzzle.puzzle.split('');
   answerArray.forEach((character, ind) => {
     if(character !== ' ') {
@@ -127,12 +131,40 @@ $('.spin-wheel').on('click', () => {
 })
 
 const spinWheel = () => {
-  let spinValues = getWheelValues();
+  const spinValues = getWheelValues();
   game.spinWheel(spinValues[Math.floor(Math.random() * (spinValues.length) + 1)])
   if(typeof game.spinValue !== 'number') {
     game.nextPlayer()
   }
   console.log(game.spinValue)
+}
+
+$('.submit-solve').on('click', () => {
+  solvePuzzle();
+})
+
+const solvePuzzle = () => {
+  const playerInput = $('.solve-puzzle').val().toUpperCase().split('');
+  const correctAnswer = puzzle.puzzle.toUpperCase().split('');
+  const guessReview = correctAnswer.filter( (character, ind) => character === playerInput[ind])
+  if(guessReview.length === correctAnswer.length) {
+    winRound();
+  } else {
+    game.nextPlayer();
+  }
+  $('.solve-puzzle').val('')
+  console.log(puzzle.puzzle)
+}
+
+const winRound = () => {
+  game.roundAdvance();
+  createPuzzle();
+  players.winRound(`p${game.currentPlayer}`);
+  for( let i = 0; i < 48; i++ ) {
+    $(`.tile-${i}`).remove();
+    $('.board').prepend(`<div class='tile tile-${i}'></div>`);
+  }
+  enterLetterSpaces();
 }
 
 
