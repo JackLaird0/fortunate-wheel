@@ -112,9 +112,9 @@ describe('Player class tests', () => {
     });
 
     it('should clear out all three player balances', () => {
-      const mockPlayers = ['p1', 'p2', 'p3'];
+      const playerKeys = ['p1', 'p2', 'p3'];
       players.winRound('p3')
-      mockPlayers.forEach( p => {
+      playerKeys.forEach( p => {
         expect(players[p].balance).to.equal(0);
       });
     });
