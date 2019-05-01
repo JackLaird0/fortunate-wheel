@@ -13,18 +13,18 @@
     <div class="scoreboard-hidden">
       <div class="player-score player-one">
         <p class='playerOne-name'>Name</p>
-        <p class='player1-score'>Score: 0</p>
-        <p>bank</p>  
+        <p class='player1-score'> $0</p>
+        <p class='player1-bank'>bank</p>  
       </div>
       <div class="player-score player-two">
         <p class='playerTwo-name'>Name</p>
-        <p class='player2-score'>Score: 0</p>
-        <p>bank</p>
+        <p class='player2-score'>$0</p>
+        <p class='player2-bank'>bank</p>
       </div>
       <div class="player-score player-three">
         <p class='playerThree-name'>Name</p>
-        <p class='player3-score'>Score: 0</p>
-        <p>bank</p>
+        <p class='player3-score'>$0</p>
+        <p class='player3-bank'>bank</p>
       </div>
     </div>
     <div class="score-board">
@@ -33,6 +33,12 @@
       </div>
       <div class="right-padding"></div>
     </div>
+    <div class="spin-container">
+        <button class="spin-wheel">
+          Spin
+        </button>
+        <p class="spin-value">--</p>
+      </div>
     <div class="letter-bank">
       <div class="consonants">
 
@@ -41,19 +47,14 @@
 
       </div>
     </div>
-    <div class="spin-container">
-      <button class="spin-wheel">
-        Spin Me
-      </button>
-      <input type="text" class="solve-puzzle">
-      <button class="submit-solve">Submit</button>
-    </div>
+  
+    <input type="text" class="solve-puzzle">
+    <button class="submit-solve">Submit</button>
     <!-- Do not include the index.js or main.bundle.js file here - it is done automatically by the webpack server -->
   </body>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="./scripts/index.js" type="text/javascript"></script>
 </html>
-
  <!-- <div class="spinner">
     <div class="double-bounce1"></div>
     <div class="double-bounce2"></div>
