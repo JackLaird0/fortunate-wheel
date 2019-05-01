@@ -16,7 +16,7 @@ class Game {
     this.currentPlayer === 3 ? this.currentPlayer = 1 : this.currentPlayer ++;
   }
 
-  spinWheel(value) {
+  spinWheel(value = 0) {
     this.spinValue = value;
   }
 }
