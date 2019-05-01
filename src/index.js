@@ -31,7 +31,8 @@ $('.submit-names').on('click', e => {
   createLetterBank();
   performElementAnimations();
   enterLetterSpaces();
-  $('.letter').on('click', e => selectLetter(e));
+  $('.con').on('click', e => selectLetter(e, 'con'))
+$('.vow').on('click', e => selectLetter(e, 'vow'))
 });
 
 const performElementAnimations = () => {
@@ -39,20 +40,29 @@ const performElementAnimations = () => {
   $('.scoreboard-hidden').addClass('scoreboard-show');
 }
 
-const createLetterBank = () => {
-  const consonants = ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'y', 'z'].reverse();
-  const vowels = ['a', 'e', 'i', 'o', 'u'].reverse();
-  prependLetters(consonants, 'consonants');
-  prependLetters(vowels, 'vowels');
-}
 
-const prependLetters = (bank, type) => {
+const prependLetters = (bank, type, name) => {
   bank.forEach( (letter) => {
-    $(`.${type}`).prepend(`<button class='letter '>${letter.toUpperCase()}</button>`)
+    $(`.${type}`).prepend(`<button class='letter ${name}'>${letter.toUpperCase()}</button>`)
   })
 }
 
-$('.letter').on('click', e => selectLetter(e))
+const createLetterBank = () => {
+  const consonants = ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'y', 'z'].reverse();
+  const vowels = ['a', 'e', 'i', 'o', 'u'].reverse();
+  prependLetters(consonants, 'consonants', 'con');
+  prependLetters(vowels, 'vowels', 'vow');
+}
+
+const selectLetter = (e,  letterName) => {
+  const letterAnswer = addLetterToBoard(e);
+  letterName === 'con' ? addScoreToPlayer(letterAnswer[0], letterAnswer[1]) : buyVowel();
+}
+
+const buyVowel = () => {
+  players.buyVowel(`p${game.currentPlayer}`);
+  changeScoreboard();
+}
 
 const createPlayers = () => {
   const playerClass = ['.playerOne', '.playerTwo', '.playerThree'];
@@ -84,26 +94,21 @@ const createPuzzle = () => {
 const enterLetterSpaces = () => {
   let answerArray = puzzle.puzzle.split('');
   answerArray.forEach((character, ind) => {
-    if(character !== ' ') {
-      $(`.tile-${46 - ind}`).addClass('letter-space')
-    }
+    if(character !== ' ') $(`.tile-${46 - ind}`).addClass('letter-space');
   })
 }
 
-const selectLetter = e => {
-  const letterAnswer = addLetterToBoard(e);
-  addScoreToPlayer(letterAnswer[0], letterAnswer[1]);
-}
 
 const addScoreToPlayer = (letter, answer) => {
   const scoreData = { 
-      spinValue: game.spinValue,
-      currentPlayer: `p${game.currentPlayer}`,
-      letterFactor: answer.filter( character => letter === character ).length
-                  }     
+                      spinValue: game.spinValue,
+                      currentPlayer: `p${game.currentPlayer}`,
+                      letterFactor: answer.filter( character => letter === character ).length
+                    }     
+  const { spinValue, currentPlayer, letterFactor } = scoreData;
 
-  if(scoreData.letterFactor > 0) {
-    players.guessLetter(scoreData.currentPlayer, scoreData.spinValue, scoreData.letterFactor)
+  if(letterFactor > 0) {
+    players.guessLetter(currentPlayer, spinValue, letterFactor);
     changeScoreboard();
   } else {
     game.nextPlayer();
@@ -123,11 +128,11 @@ const addLetterToBoard = e => {
 }
 
 const changeScoreboard = () => {
-  $(`.player${game.currentPlayer}-score`).text('Score: ' + String(players[`p${game.currentPlayer}`].balance))
+  $(`.player${game.currentPlayer}-score`).text('$' + String(players[`p${game.currentPlayer}`].balance))
 }
 
 $('.spin-wheel').on('click', () => {
-  spinWheel()
+  spinWheel();
 })
 
 const spinWheel = () => {
@@ -136,7 +141,8 @@ const spinWheel = () => {
   if(typeof game.spinValue !== 'number') {
     game.nextPlayer()
   }
-  console.log(game.spinValue)
+  $('.spin-value').text(String(game.spinValue));
+  $('.spin-value').addClass('spin-animation')
 }
 
 $('.submit-solve').on('click', () => {
@@ -156,15 +162,28 @@ const solvePuzzle = () => {
   console.log(puzzle.puzzle)
 }
 
+const addBankBalance = () => {
+  $(`.player${game.currentPlayer}-bank`).text('$' + String(players[`p${game.currentPlayer}`].bank))
+}
+
 const winRound = () => {
   game.roundAdvance();
   createPuzzle();
   players.winRound(`p${game.currentPlayer}`);
+  clearScoreBoard();
+  addBankBalance();
   for( let i = 0; i < 48; i++ ) {
     $(`.tile-${i}`).remove();
     $('.board').prepend(`<div class='tile tile-${i}'></div>`);
   }
   enterLetterSpaces();
+}
+
+const clearScoreBoard = () => {
+  const playerKeys = ['1', '2', '3'];
+  playerKeys.forEach(key => {
+    $(`.player${key}-score`).text('$0')
+  })
 }
 
 
